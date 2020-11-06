@@ -1,0 +1,211 @@
+// Mixin Rules - some mixin uitlities
+
+// Table of contents
+// --------------------------------------------------
+// =1 Box Model
+// =2 Center Block
+// =3 Opacity
+// =4 Box Shadow
+// =5 Transform TranslateX
+// =6 Transform TranslateY
+// =7 Transform Translate
+// =8 Transform Scale
+// =9 Rotate
+//=10 Transition
+//=11 Font Icon
+//=12 Border Radius
+//=13 Background Cover
+//=14 Animation
+//=15 SVG url for css background
+
+
+// =1 Box model
+@mixin box-sizing($box-model) {
+	-webkit-box-sizing: $box-model; // Safari <= 7
+	-moz-box-sizing: $box-model; // Firefox <= 19
+	box-sizing: $box-model;
+}
+
+// =2 Center block
+@mixin center-block {
+	display: inline-block;
+	margin: 0 auto;
+}
+
+// =3 Opacity
+@mixin opacity($opacity) {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=$opacity)";
+    filter: alpha(opacity=$opacity);
+    opacity: $opacity;
+}
+
+// =4 Box Shadow
+@mixin box-shadow($top, $left, $blur, $color, $inset: false, $important: false) {
+	@if $important {
+		-webkit-box-shadow: $top $left $blur $color !important;
+		-moz-box-shadow: $top $left $blur $color !important;
+		box-shadow: $top $left $blur $color !important;
+	} @else {
+		-webkit-box-shadow: $top $left $blur $color;
+		-moz-box-shadow: $top $left $blur $color;
+		box-shadow: $top $left $blur $color;
+	}
+}
+
+// =5 Transform TranslateX
+@mixin translateX($space) {
+	-webkit-transform: translateX($space);
+	-ms-transform: translateX($space);
+	transform: translateX($space);
+}
+
+// =6 Transform TranslateY
+@mixin translateY($space) {
+	-webkit-transform: translateY($space);
+	-ms-transform: translateY($space);
+	transform: translateY($space);
+}
+
+// =7 Transform Translate
+@mixin translate($spaceX, $spaceY, $important: false) {
+	@if $important {
+		-webkit-transform: translate($spaceX, $spaceY) !important;
+		-ms-transform: translate($spaceX, $spaceY) !important;
+		transform: translate($spaceX, $spaceY) !important;
+	} @else {
+		-webkit-transform: translate($spaceX, $spaceY);
+		-ms-transform: translate($spaceX, $spaceY);
+		transform: translate($spaceX, $spaceY);
+	}
+}
+
+// =8 Transform Scale
+@mixin scale($scale) {
+	-webkit-transform: scale($scale);
+	-ms-transform: scale($scale);
+	transform: scale($scale);
+}
+
+
+// =9 Rotate
+@mixin rotate($deg) {
+	-webkit-transform: rotate($deg);
+	-moz-transform: rotate($deg);
+	-ms-transform: rotate($deg);
+	-o-transform: rotate($deg);
+	transform: rotate($deg);
+}
+
+// =9.1 Animation Rotating
+@-webkit-keyframes rotating {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+
+
+// =10 Transition
+@mixin transition($transition-property, $transition-time, $method) {
+	-webkit-transition: $transition-property $transition-time $method;
+	-moz-transition: $transition-property $transition-time $method;
+	-ms-transition: $transition-property $transition-time $method;
+	-o-transition: $transition-property $transition-time $method;
+	transition: $transition-property $transition-time $method;
+}
+
+// =11 Font Awesome Icon
+@mixin icon-solid($icon) {
+	@include fa-icon;
+	@extend .fas;
+	content: fa-content($icon);
+}
+
+// =11.1 Font Awesome Icon Brand
+@mixin icon-brand($icon) {
+	@include fa-icon;
+	@extend .fab;
+	content: fa-content($icon);
+}
+
+// =11.2 Icon Position
+@mixin icon-position {
+	position: absolute;
+	top: 25%;
+	left: 10px;
+}
+
+// =11.3 Simple Line Icon
+@mixin icomoon($icon) {
+	display: block;
+	font-family: 'icomoon';
+	content: $icon;
+}
+
+// =12 Border Radius
+@mixin border-radius($radius, $important: false) {
+	@if $important {
+		background-clip: padding-box;
+		-webkit-border-radius: $radius !important;
+		border-radius: $radius !important;
+	}
+	background-clip: padding-box; /* stops bg color from leaking outside the border: */
+	-webkit-border-radius: $radius;
+	border-radius: $radius;
+}
+
+// =13 Background Cover
+@mixin background-size($size) {
+	-webkit-background-size: $size;
+	-moz-background-size: $size;
+	-o-background-size: $size;
+	background-size: $size;
+}
+
+//=14 Animation
+@mixin animation($name, $time, $ease, $infinite) {
+	-webkit-animation: $name $time $ease $infinite;
+	-moz-animation: $name $time $ease $infinite;
+	-ms-animation: $name $time $ease $infinite;
+	-o-animation: $name $time $ease $infinite;
+	animation: $name $time $ease $infinite;
+}
+
+// =15 SVG url for css background
+// @source http://codepen.io/Tigt/blog/optimizing-svgs-in-data-uris
+
+/// Helper functions
+// Return null rather than throwing an error if index is outside list range
+@function nth-or-null($list, $index) {
+  @return if(length($list) >= $index, nth($list, $index), null);
+}    
+
+//  Function to replace characters in a string
+@function str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search); 
+    @if $index { 
+        @return str-slice($string, 1, $index - 1) + $replace + 
+        str-replace(str-slice($string, $index + 
+        str-length($search)), $search, $replace); 
+    }
+    @return $string; 
+}
+
+// Function to create an optimized svg url
+@function svg-url($svg){
+    // Chunk up string in order to avoid
+    // "SystemStackError: stack level too deep"
+    $encoded:'';
+    $slice: 2000;
+    $index: 0;
+    $loops: ceil(str-length($svg)/$slice);
+    @for $i from 1 through $loops {
+        $chunk: str-slice($svg, $index, $index + $slice - 1); 
+        $chunk: str-replace($chunk,'"','\'');
+        $chunk: str-replace($chunk,'<','%3C');
+        $chunk: str-replace($chunk,'>','%3E');
+        $chunk: str-replace($chunk,'&','%26');
+        $chunk: str-replace($chunk,'#','%23');       
+        $encoded: #{$encoded}#{$chunk};
+        $index: $index + $slice; 
+    }
+    @return url("data:image/svg+xml;charset=utf8,#{$encoded}");   
+}

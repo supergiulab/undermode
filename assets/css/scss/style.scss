@@ -1,0 +1,384 @@
+/*!
+* Main Style for UnderMode
+* Version: 2.0.1.2
+*
+* @package undermode
+*/
+/*--------------------------------------------------------------
+# Vars
+--------------------------------------------------------------*/
+@import "variables";
+/*--------------------------------------------------------------
+# Bootstrap
+--------------------------------------------------------------*/
+@import "bootstrap";
+/*--------------------------------------------------------------
+# FontAwesome
+--------------------------------------------------------------*/
+@import "fontawesome";
+/*--------------------------------------------------------------
+# Mixins
+--------------------------------------------------------------*/
+@import 'mixins';
+
+
+/*--------------------------------------------------------------*/
+//* Body
+html, body.page-undermode {
+	height: 100%;
+	min-height: 100%;
+}
+
+body.page-undermode {
+	position: relative;
+	overflow: hidden;
+	z-index: 1;
+
+	&:after {
+		display: block;
+		content: "";
+		position: absolute;
+		top: 0; left: 0;
+		width: 100%; height: 100%;
+		box-shadow: inset 0 1rem 4rem rgba(0,0,0,0.2);
+	}
+}
+
+b, strong { font-weight: bold !important; }
+
+
+/*--------------------------------------------------------------*/
+//* Common Styles
+.um-site-content,
+.um-site-footer { @extend .container; }
+
+
+/*--------------------------------------------------------------*/
+//* Header
+#um-masthead {
+	position: relative;
+	height: 100%;
+
+	&:after {
+		display: block;
+		content: "";
+		position: absolute;
+		top: 0; left: 0;
+		width: 100%; height: 100%;
+	}
+}
+
+/*--------------------------------------------------------------*/
+//* Footer
+#um-colophon {
+	position: absolute;
+	bottom: 0; left: 0;
+	z-index: 1;
+	width: 100%;
+	background-color: $gray-dark;
+}
+
+.um-site-footer { padding: 1.2rem 2rem 1rem; }
+
+
+/*--------------------------------------------------------------*/
+//* Content
+.um-site-content {
+	position: absolute;
+	top: 50%; left: 50%;
+	@include translate(-50%, -50%);
+	width: 100%;
+	margin-top: -3rem;
+	text-align: center;
+	z-index: 1;
+
+	//* Logo
+	.site-logo {
+		max-width: 400px;
+		margin: 0 auto;
+	}
+
+	//* Page Content
+	#page-content { margin: 2rem auto; }
+
+	//* Social
+	ul.site-socials {
+		list-style-type: none;
+		margin: 0; padding: 0;
+		margin-top: 2rem;
+
+		li {
+			position: relative;
+			display: inline-block;
+			margin-right: 0.5rem;
+
+			a {
+				display: block;
+				width: 22px; height: 22px;
+				text-indent: 9999px;
+				overflow: hidden;
+
+				&:hover, &:focus {
+					&:after { opacity: 1; }
+				}
+			}
+
+			a:after {
+				position: absolute;
+				top: 0; left: 0;
+				width: 22px; height: 22px;
+				text-align: center;
+				font-size: 16px;
+				line-height: 1.8;
+				text-indent: 0 !important;
+				opacity: 0.85;
+			}
+		}
+
+		li.site-facebook a:after { @include icon-brand('\f09a'); }
+		li.site-twitter a:after { @include icon-brand('\f099'); }
+		li.site-instagram a:after { @include icon-brand('\f16d'); }
+		li.site-google a:after { @include icon-brand('\f0d5'); }
+		li.site-youtube a:after { @include icon-brand('\f16a'); }
+		li.site-linkedin a:after { @include icon-brand('\f0e1'); }
+		li.site-skype a:after { @include icon-brand('\f17e'); }
+	}
+
+	//* Contact
+	ul.site-contact {
+		list-style-type: none;
+		margin: 0; padding: 0;
+		margin-top: 2rem;
+
+		li a, li a:visited {
+			color: $gray-dark;
+			text-decoration: none;
+		}
+
+		li {
+			margin-bottom: 0.5rem;
+
+			&:last-child { margin-bottom: 0; }
+
+			& > div {
+				max-width: 90%;
+				display: inline-block;
+				vertical-align: top;
+			}
+
+			p {
+				margin-bottom: 0.5rem;
+
+				&:last-of-type { margin-bottom: 0; }
+			}
+		}
+
+		li:before {
+			display: inline-block !important;
+			margin-right: 0.5rem;
+		}
+
+		li.site-address:before, li.site-location:before { @include icomoon('\e00b'); }
+		li.site-phone:before, li.site-phone-2:before, li.site-phone_2:before { @include icomoon('\e830'); }
+		li.site-mobile:before { @include icomoon('\e83a'); }
+		li.site-fax:before { @include icomoon('\e81c'); }
+		li.site-email:before { @include icomoon('\e818'); }
+		li.site-skype:before { @include icon-brand($fa-var-skype); }
+
+		li.site-hours:before {
+			@include icomoon('\e615');
+			display: block !important;
+			margin: 0 auto;
+		}
+	}
+}
+
+
+/*--------------------------------------------------------------*/
+//* Login Form
+#um-login {
+	display: block !important;
+	position: absolute;
+	bottom: 12%; right: -300px;
+	width: 300px; height: auto !important;
+	@include border-left-radius(3px);
+	@include transition(all, 0.4s, ease-out);
+	background-color: $gray-dark;
+	color: #fff;
+	z-index: 9999;
+
+	&.open {
+		right: 0;
+		@include transition(right, 0.2s, ease);
+	}
+
+	.um-login-form {
+		@extend .clearfix;
+		padding: 2rem;
+
+		form { margin-top: 2rem; }
+
+		p.login-email,
+		p.login-username,
+		p.login-password {
+			padding: 0;
+			margin-bottom: 0.5rem;
+
+			label { display: none; }
+		}
+
+		p.login-username { margin-bottom: 0.5rem; } 
+
+		p.login-remember,
+		p.login-submit { margin: 0; }
+
+		p.login-remember {
+			display: none; /* "rememer me" feature is not working :( */
+			float: left;
+
+			label {
+				padding-top: 0.4rem;
+				padding-left: 1.5rem;
+
+				&:before {
+					top: 6px;
+					left: 0px;
+					font-size: 18px;
+					color: darken($gray-dark, 8%);
+				}
+
+				&:after { color: $brand-primary; }
+			}
+		}
+
+		p.login-submit {
+			float: right;
+			width: 100%;
+		}
+
+		input[type=text],
+		input[type=email],
+		input[type=password] {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			-ms-box-sizing: border-box;
+			-o-box-sizing: border-box;
+			box-sizing: border-box;
+			width: 100%; height: auto;
+			padding: 0.5rem;
+			margin: 0;
+			border: 1px solid #fff;
+			background-color: #fff;
+			color: $brand-primary;
+
+			&:-webkit-autofill {
+				-webkit-box-shadow: 0 0 0px 1000px #fff inset;
+				-webkit-text-fill-color: $brand-primary !important;
+			}
+		}
+
+		::-webkit-input-placeholder { color: $gray-light; }
+		:-moz-placeholder { color: $gray-light; }
+		::-moz-placeholder { color: $gray-light; }
+		:-ms-input-placeholder { color: $gray-light; }
+
+		input[type=submit] {
+			width: 100%;
+			padding: 1rem;
+			min-width: 8rem;
+			border: 1px solid $brand-primary;
+			background-color: $brand-primary;
+			text-transform: uppercase;
+			color: #fff;
+			opacity: 1;
+			cursor: pointer;
+			@include transition(all, 0.4s, ease);
+
+			&:hover, &:focus, &:active {
+				border: 1px solid darken($brand-primary, 8%);
+				background-color: darken($brand-primary, 8%);
+				opacity: 0.85;
+			}
+		}
+
+		//* Lost Password
+		a.lost-password {
+			display: block;
+			clear: both;
+			padding-top: 1rem;
+			font-size: 80%;
+		}
+		
+		//* Content
+		.login-content {
+			@extend .clearfix;
+
+			h2 {
+				margin: 0; padding: 0;
+				color: $brand-primary;
+			}
+
+			& > p {
+				margin: 0.5rem 0 1.5rem;
+				font-size: 80%;
+				color: $gray-lighter;
+			}
+		}
+
+		.logged-in > p { margin: 1rem 0 0; }
+
+		//* Errors
+		.login-error {
+			@extend .alert-warning;
+			@extend .alert-dismissible;
+			margin-bottom: 2rem;
+
+			p { margin: 0; }
+		}
+	}
+} // #login
+
+/*--------------------------------------------------------------*/
+//* Autentication Links
+.um-autentication-link {
+	min-height: 20px;
+	text-align: left;
+	z-index: 10000;
+
+	#um-login-link,
+	#um-logout-link,
+	#um-dashboard-link {
+		display: inline-block;
+		position: relative;
+		width: 18px; height: 18px;
+		margin-right: 1rem;
+		text-indent: -9999px;
+
+		&:before {
+			position: absolute;
+			top: 0; left: 0;
+			width: 18px; height: 18px;
+			font-size: 18px;
+			text-align: center;
+			line-height: 1;
+			text-indent: 0 !important;
+		}
+
+		&:hover, &:focus { opacity: 0.8; }
+	}
+	
+	#um-login-link {
+		margin-right: 0;
+		float: right;
+
+		&:before { @include icomoon('\e16b'); }
+	}
+
+	#um-logout-link:before { @include icomoon('\e16a'); }
+
+	#um-dashboard-link {
+		margin-right: 0;
+
+		&:before { @include icomoon('\e176'); }
+	}
+}
